@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from PIL import Image, ImageStat
 from functools import reduce
 
@@ -29,12 +31,15 @@ def detect_color_image(file, thumb_size=100, MSE_cutoff=50, MSE_bw_cutoff=30, ad
         else:
             print("Color")
         print("( MSE=",MSE_gs,", MSE_bw=",MSE_bw," )")
-    elif len(bands)==1:
-        print("Black and white", bands)
+    elif pil_img.mode == "L":
+        print("Grayscale, code should be written to detect black and white")
+        # TODO
+    elif pil_img.mode == "1":
+        print("Black and White")
     else:
         print("Don't know...", bands)
 
-files = ["peydurma.jpeg", "peydurma-color.jpeg", "smallcolor.jpeg", "manuscript-1.jpeg"]
+files = ["bwencodedasgrayscale.tif"]
 for file in files:
     print(file)
-    detect_color_image(file)
+    detect_color_image("images/"+file)
