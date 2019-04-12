@@ -25,19 +25,26 @@ def detect_color_image(file, thumb_size=100, MSE_cutoff=50, MSE_bw_cutoff=30, ad
         MSE_bw = float(SSE_bw)/(thumb_size*thumb_size)
         if MSE_gs <= MSE_cutoff:
             if MSE_bw <= MSE_bw_cutoff:
-                print("blackandwhite")
+                print("is in fact blackandwhite")
             else:
-                print("grayscale")
+                print("is in fact grayscale")
         else:
-            print("Color")
+            print("is indeed color")
         print("( MSE=",MSE_gs,", MSE_bw=",MSE_bw," )")
     elif pil_img.mode == "L":
-        print("Grayscale, code should be written to detect black and white")
-        # TODO
+        SSE_bw  = 0
+        thumb = pil_img.resize((thumb_size,thumb_size))
+        for pixel in thumb.getdata():
+            SSE_bw += min(255-pixel, pixel)
+        MSE_bw = float(SSE_bw)/(thumb_size*thumb_size)
+        if MSE_bw <= MSE_bw_cutoff:
+            print("is in fact blackandwhite")
+        else:
+            print("is indeed grayscale")
     elif pil_img.mode == "1":
-        print("Black and White")
+        print("black and white")
     else:
-        print("Don't know...", bands)
+        print("cannot recognize the image", bands)
 
 files = ["bwencodedasgrayscale.tif"]
 for file in files:
